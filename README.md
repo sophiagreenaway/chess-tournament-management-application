@@ -1,19 +1,24 @@
-# Starter code - OpenClassrooms WPS | P3
+# OpenClassrooms WPS | P3
 
-This repository contains the work that has been done so far on the chess tournament program.
+This repository contains the current implementation of the chess tournament program.
 
 ### Data files
 
 There are data files provided:
 - JSON files for the chess clubs of Springfield and Cornville
-- JSON files for two tournaments: one completed, and one in progress
+- JSON files for tournaments in progress and completed states
+- A generated reports folder for tournament export files
 
 ### Models
 
-This package contains the models already defined by the application:
+This package contains the domain models used by the application:
 * `Player` is a class that represents a chess player
 * `Club` is a class that represents a chess club (including `Player`s)
 * `ClubManager` is a manager class that allows to manage all clubs (and create new ones)
+* `Match` is a class that represents a match between two players
+* `Round` is a class that represents one tournament round and its matches
+* `Tournament` is a class that handles tournament rounds, results, standings, and serialization
+* `TournamentManager` is a manager class that loads and saves tournament files
 
 ### Screens
 
@@ -28,9 +33,20 @@ When executed, a command returns a context.
 
 ### Main application
 
-The main application is controlled by `manage_clubs.py`. Based on the current Context instance, it instantiates the screens and runs them. The command returned by the screen is then executed to obtain the next context.
+The club management application is controlled by `manage_clubs.py`. Based on the current Context instance, it instantiates the screens and runs them. The command returned by the screen is then executed to obtain the next context.
 
 The main application is an infinite loop and stops when a context has the attribute `run` set to False.
+
+Tournament operations are available in `manage_tournaments.py`, using:
+- `controllers/tournament_controller.py` for orchestration
+- `views/tournament_view.py` for terminal interaction
+
+The tournament flow includes:
+- Loading players and displaying player information by name
+- Loading tournaments and displaying basic tournament attributes
+- Loading completed tournaments and calculating points per player
+- Exporting tournament reports to `data/reports`
+- Starting/advancing rounds and recording match results
 
 # Setup
 
