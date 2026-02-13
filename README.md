@@ -31,3 +31,47 @@ When executed, a command returns a context.
 The main application is controlled by `manage_clubs.py`. Based on the current Context instance, it instantiates the screens and runs them. The command returned by the screen is then executed to obtain the next context.
 
 The main application is an infinite loop and stops when a context has the attribute `run` set to False.
+
+# Setup
+
+## Create and activate a virtual environment
+
+From the project root:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+## Install tooling with pip
+
+```bash
+python -m pip install --upgrade pip
+python -m pip install flake8
+```
+
+If you add third-party dependencies later, install them with `pip` in this same environment.
+
+## Run the program
+
+Main existing application:
+
+```bash
+python manage_clubs.py
+```
+
+Tournament flow script:
+
+```bash
+python manage_tournaments.py
+```
+
+## Generate a new flake8 report
+
+Run:
+
+```bash
+flake8 . --exclude=.venv,__pycache__ --output-file=flake8_report.txt
+```
+
+This updates `/Users/sophiagreenaway/repos/P3-Application-Developer-Skills-Bootcamp/flake8_report.txt` with a new report.
