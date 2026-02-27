@@ -20,7 +20,7 @@ class Tournament:
         # Class attributes below are private
         _rounds: list["Round"]| None = None,
         _current_round_index: int = 0,
-        _player_ids: list[str]| None = None,
+        _player_names: list[str]| None = None,
         _completed: bool = False,
         filepath=None,
 
@@ -48,7 +48,7 @@ class Tournament:
                 else:
                     self._rounds.append(Round.from_list(round_data))
         self._current_round_index = _current_round_index
-        self._player_ids = _player_ids or []
+        self._player_names = _player_names or []
         self._completed = _completed
 
     def register_player(self, player):
@@ -56,9 +56,9 @@ class Tournament:
             return None
         if not isinstance(player, Player):
             return None
-        if player.chess_id not in self._player_ids:
-            self._player_ids.append(player.chess_id)
-        return player.chess_id
+        if player.name not in self._player_names:
+            self._player_names.append(player.name)
+        return player.name
     
     def get_current_round(self):
         if self._current_round_index == 0:
@@ -68,12 +68,12 @@ class Tournament:
     def generate_first_round(self):
         if self._rounds:
             return self._rounds[0]
-        if len(self._player_ids) < 2:
+        if len(self._player_names) < 2:
             return None
-        if len(self._player_ids) % 2 != 0:
+        if len(self._player_names) % 2 != 0:
             return None
 
-        players = self._player_ids[:]   # copy list
+        players = self._player_names[:]   # copy list
         random.shuffle(players)
 
         new_round = Round()
@@ -105,7 +105,7 @@ class Tournament:
         table = self.standings()
         players = []
         for row in table:
-            players.append(row["player_id"])
+            players.append(row["player_name"])
 
         played_pairs = self._played_pairs()
         waiting = players[:]
@@ -179,8 +179,8 @@ class Tournament:
 
     def standings(self):
         points = {}
-        for pid in self._player_ids:
-            points[pid] = 0
+        for name in self._player_names:
+            points[name] = 0
 
         for rnd in self._rounds:
             for match in rnd.matches:
@@ -201,8 +201,8 @@ class Tournament:
 
         ranking = []
 
-        for pid, score in points.items():
-            ranking.append({"player_id": pid, "points": score})
+        for name, score in points.items():
+            ranking.append({"player_name": name, "points": score})
 
         def get_points(item):
             return item["points"]
@@ -242,7 +242,7 @@ class Tournament:
 
         winner = None
         if len(final_table) > 0:
-            winner = final_table[0]["player_id"]
+            winner = final_table[0]["player_name"]
 
         return {
             "completed": True,
@@ -266,7 +266,7 @@ class Tournament:
             "number_of_rounds": self.number_of_rounds,
             "current_round": current_round,
             "completed": self._completed,
-            "players": self._player_ids[:],
+            "players": self._player_names[:],
             "rounds": [rnd.serialize() for rnd in self._rounds],
         }
 
@@ -288,7 +288,7 @@ class Tournament:
             number_of_rounds=data["number_of_rounds"],
             _rounds=data.get("rounds", []),
             _current_round_index=data.get("current_round") or 0,
-            _player_ids=data.get("players", []),
+            _player_names=data.get("players", []),
             _completed=data.get("completed", False),
             filepath=filepath,
         )

@@ -7,6 +7,8 @@ class TournamentView:
         print("4 Export tournament report to file")
         print("5 Start or continue a round")
         print("6 Record a match result")
+        print("7 Create tournament")
+        print("X Exit")
         return input("Choice? ").strip()
 
     def ask_player_name(self):
@@ -78,10 +80,62 @@ class TournamentView:
         return None
 
     def ask_winner(self):
-        value = input("Winner Chess ID (leave empty for draw)? ").strip().upper()
+        value = input("Winner player name (leave empty for draw)? ").strip()
         if value == "":
             return None
         return value
+
+    def ask_main_menu_or_exit(self):
+        while True:
+            value = input("Main menu or exit? (m/x) ").strip().lower()
+            if value in {"m", "main", "menu"}:
+                return "menu"
+            if value in {"x", "exit"}:
+                return "exit"
+            print("Please enter m or x.")
+
+    def ask_match_result_next_action(self):
+        while True:
+            value = input("Next: record, main menu, or exit? (r/m/x) ").strip().lower()
+            if value in {"r", "record"}:
+                return "record"
+            if value in {"m", "main", "menu"}:
+                return "menu"
+            if value in {"x", "exit"}:
+                return "exit"
+            print("Please enter r, m, or x.")
+
+    def ask_tournament_name(self):
+        while True:
+            value = input("Tournament name? ").strip()
+            if value:
+                return value
+            print("Please provide a tournament name.")
+
+    def ask_tournament_venue(self):
+        while True:
+            value = input("Venue? ").strip()
+            if value:
+                return value
+            print("Please provide a venue.")
+
+    def ask_tournament_start_date(self):
+        return input("Start date (dd-mm-yyyy)? ").strip()
+
+    def ask_tournament_end_date(self):
+        return input("End date (dd-mm-yyyy)? ").strip()
+
+    def ask_number_of_rounds(self):
+        raw_value = input("Number of rounds? ").strip()
+        if raw_value.isdigit():
+            return int(raw_value)
+        return None
+
+    def ask_tournament_player_names(self):
+        value = input("Player names (comma-separated)? ").strip()
+        if not value:
+            return []
+        return [part.strip() for part in value.split(",") if part.strip()]
 
     def show_message(self, message):
         print(message)

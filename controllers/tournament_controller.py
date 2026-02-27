@@ -1,6 +1,8 @@
 from pathlib import Path
+import re
+from datetime import datetime
 
-from models import ClubManager, TournamentManager
+from models import ClubManager, Tournament, TournamentManager
 
 
 class TournamentController:
@@ -31,8 +33,116 @@ class TournamentController:
             return chess_id
         return player.name
 
+    def _resolve_winner_for_match(self, tournament, round_number, match_number, winner):
+        if winner is None:
+            return None
+
+        round_index = round_number - 1
+        match_index = match_number - 1
+        if round_index < 0 or round_index >= len(tournament._rounds):
+            return winner
+
+        current_round = tournament._rounds[round_index]
+        if match_index < 0 or match_index >= len(current_round.matches):
+            return winner
+
+        match = current_round.matches[match_index]
+        match_players = match.players
+
+        normalized_winner = winner.strip().lower()
+        for player_value in match_players:
+            if player_value.strip().lower() == normalized_winner:
+                return player_value
+
+        player = self.get_player_by_name(winner)
+        if player is None:
+            return winner
+
+        for player_value in match_players:
+            value = player_value.strip()
+            if value == player.chess_id or value.lower() == player.name.strip().lower():
+                return player_value
+
+        return winner
+
     def list_tournaments(self, include_completed=None):
         return self.tournament_manager.list_tournaments(include_completed=include_completed)
+
+    def _sanitize_filename(self, text):
+        normalized = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+        if not normalized:
+            normalized = "tournament"
+        return normalized
+
+    def _next_tournament_filepath(self, tournament_name):
+        tournaments_dir = self.tournament_manager.data_folder
+        tournaments_dir.mkdir(parents=True, exist_ok=True)
+        base = self._sanitize_filename(tournament_name)
+        filepath = tournaments_dir / f"{base}.json"
+        i = 2
+        while filepath.exists():
+            filepath = tournaments_dir / f"{base}-{i}.json"
+            i += 1
+        return filepath
+
+    def create_tournament(self, name, venue, start_date_text, end_date_text, number_of_rounds, player_names):
+        if not player_names:
+            return {"ok": False, "message": "Please provide at least two players."}
+
+        unique_names = []
+        seen = set()
+        for raw_name in player_names:
+            value = raw_name.strip()
+            key = value.lower()
+            if not value or key in seen:
+                continue
+            seen.add(key)
+            unique_names.append(value)
+
+        if len(unique_names) < 2:
+            return {"ok": False, "message": "Please provide at least two unique players."}
+
+        if len(unique_names) % 2 != 0:
+            return {"ok": False, "message": "Please provide an even number of players."}
+
+        if number_of_rounds is None or number_of_rounds <= 0:
+            return {"ok": False, "message": "Number of rounds must be a positive integer."}
+
+        try:
+            start_date = datetime.strptime(start_date_text, Tournament.DATE_FORMAT).date()
+            end_date = datetime.strptime(end_date_text, Tournament.DATE_FORMAT).date()
+        except ValueError:
+            return {"ok": False, "message": "Dates must use dd-mm-yyyy format."}
+
+        players = []
+        missing = []
+        for player_name in unique_names:
+            player = self.get_player_by_name(player_name)
+            if player is None:
+                missing.append(player_name)
+            else:
+                players.append(player)
+
+        if missing:
+            return {
+                "ok": False,
+                "message": f"Player(s) not found: {', '.join(missing)}",
+            }
+
+        filepath = self._next_tournament_filepath(name)
+        tournament = Tournament(
+            name=name,
+            venue=venue,
+            start_date=start_date,
+            end_date=end_date,
+            number_of_rounds=number_of_rounds,
+            filepath=filepath,
+        )
+        for player in players:
+            tournament.register_player(player)
+
+        self.tournament_manager.save_tournament(tournament)
+        return {"ok": True, "filepath": filepath, "tournament": tournament}
 
     def get_basic_info(self, tournament):
         data = tournament.serialize()
@@ -50,11 +160,10 @@ class TournamentController:
         ranking = tournament.standings()
         rows = []
         for row in ranking:
-            player_id = row["player_id"]
+            player_name = row["player_name"]
             rows.append(
                 {
-                    "player_id": player_id,
-                    "player_name": self._player_name(player_id),
+                    "player_name": self._player_name(player_name),
                     "points": row["points"],
                 }
             )
@@ -114,7 +223,13 @@ class TournamentController:
         return round_value
 
     def set_match_result(self, tournament, round_number, match_number, winner):
-        updated_match = tournament.set_match_result(round_number, match_number, winner)
+        resolved_winner = self._resolve_winner_for_match(
+            tournament=tournament,
+            round_number=round_number,
+            match_number=match_number,
+            winner=winner,
+        )
+        updated_match = tournament.set_match_result(round_number, match_number, resolved_winner)
         if updated_match is not None:
             self.tournament_manager.save_tournament(tournament)
         return updated_match

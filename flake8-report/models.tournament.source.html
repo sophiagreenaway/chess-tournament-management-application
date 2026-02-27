@@ -128,7 +128,7 @@
                      </span>
                      Missing whitespace around operator</li>
                
-               </ul><tt><i>23</i>         <span class="n">_player_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span></tt>
+               </ul><tt><i>23</i>         <span class="n">_player_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span><span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span></tt>
             </div>
             <div id="l24"
                class="code sev- "><tt><i>24</i>         <span class="n">_completed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span></tt>
@@ -230,7 +230,7 @@
                class="code sev- "><tt><i>50</i>         <span class="bp">self</span><span class="o">.</span><span class="n">_current_round_index</span> <span class="o">=</span> <span class="n">_current_round_index</span></tt>
             </div>
             <div id="l51"
-               class="code sev- "><tt><i>51</i>         <span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span> <span class="o">=</span> <span class="n">_player_ids</span> <span class="ow">or</span> <span class="p">[]</span></tt>
+               class="code sev- "><tt><i>51</i>         <span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span> <span class="o">=</span> <span class="n">_player_names</span> <span class="ow">or</span> <span class="p">[]</span></tt>
             </div>
             <div id="l52"
                class="code sev- "><tt><i>52</i>         <span class="bp">self</span><span class="o">.</span><span class="n">_completed</span> <span class="o">=</span> <span class="n">_completed</span></tt>
@@ -254,13 +254,13 @@
                class="code sev- "><tt><i>58</i>             <span class="k">return</span> <span class="kc">None</span></tt>
             </div>
             <div id="l59"
-               class="code sev- "><tt><i>59</i>         <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">chess_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="p">:</span></tt>
+               class="code sev- "><tt><i>59</i>         <span class="k">if</span> <span class="n">player</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="p">:</span></tt>
             </div>
             <div id="l60"
-               class="code sev- "><tt><i>60</i>             <span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">chess_id</span><span class="p">)</span></tt>
+               class="code sev- "><tt><i>60</i>             <span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></tt>
             </div>
             <div id="l61"
-               class="code sev- "><tt><i>61</i>         <span class="k">return</span> <span class="n">player</span><span class="o">.</span><span class="n">chess_id</span></tt>
+               class="code sev- "><tt><i>61</i>         <span class="k">return</span> <span class="n">player</span><span class="o">.</span><span class="n">name</span></tt>
             </div>
             <div id="l62"
                class="code sev-2  le">
@@ -299,13 +299,13 @@
                class="code sev- "><tt><i>70</i>             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></tt>
             </div>
             <div id="l71"
-               class="code sev- "><tt><i>71</i>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span></tt>
+               class="code sev- "><tt><i>71</i>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span></tt>
             </div>
             <div id="l72"
                class="code sev- "><tt><i>72</i>             <span class="k">return</span> <span class="kc">None</span></tt>
             </div>
             <div id="l73"
-               class="code sev- "><tt><i>73</i>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span></tt>
+               class="code sev- "><tt><i>73</i>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span></tt>
             </div>
             <div id="l74"
                class="code sev- "><tt><i>74</i>             <span class="k">return</span> <span class="kc">None</span></tt>
@@ -314,7 +314,7 @@
                class="code sev- "><tt><i>75</i> &nbsp;</tt>
             </div>
             <div id="l76"
-               class="code sev- "><tt><i>76</i>         <span class="n">players</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="p">[:]</span>   <span class="c1"># copy list</span></tt>
+               class="code sev- "><tt><i>76</i>         <span class="n">players</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="p">[:]</span>   <span class="c1"># copy list</span></tt>
             </div>
             <div id="l77"
                class="code sev- "><tt><i>77</i>         <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">players</span><span class="p">)</span></tt>
@@ -410,7 +410,7 @@
                class="code sev- "><tt><i>107</i>         <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span></tt>
             </div>
             <div id="l108"
-               class="code sev- "><tt><i>108</i>             <span class="n">players</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;player_id&quot;</span><span class="p">])</span></tt>
+               class="code sev- "><tt><i>108</i>             <span class="n">players</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s2">&quot;player_name&quot;</span><span class="p">])</span></tt>
             </div>
             <div id="l109"
                class="code sev- "><tt><i>109</i> &nbsp;</tt>
@@ -632,10 +632,10 @@
                class="code sev- "><tt><i>181</i>         <span class="n">points</span> <span class="o">=</span> <span class="p">{}</span></tt>
             </div>
             <div id="l182"
-               class="code sev- "><tt><i>182</i>         <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="p">:</span></tt>
+               class="code sev- "><tt><i>182</i>         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="p">:</span></tt>
             </div>
             <div id="l183"
-               class="code sev- "><tt><i>183</i>             <span class="n">points</span><span class="p">[</span><span class="n">pid</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></tt>
+               class="code sev- "><tt><i>183</i>             <span class="n">points</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span></tt>
             </div>
             <div id="l184"
                class="code sev- "><tt><i>184</i> &nbsp;</tt>
@@ -698,10 +698,10 @@
                class="code sev- "><tt><i>203</i> &nbsp;</tt>
             </div>
             <div id="l204"
-               class="code sev- "><tt><i>204</i>         <span class="k">for</span> <span class="n">pid</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">points</span><span class="o">.</span><span class="n">items</span><span class="p">():</span></tt>
+               class="code sev- "><tt><i>204</i>         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">points</span><span class="o">.</span><span class="n">items</span><span class="p">():</span></tt>
             </div>
             <div id="l205"
-               class="code sev- "><tt><i>205</i>             <span class="n">ranking</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;player_id&quot;</span><span class="p">:</span> <span class="n">pid</span><span class="p">,</span> <span class="s2">&quot;points&quot;</span><span class="p">:</span> <span class="n">score</span><span class="p">})</span></tt>
+               class="code sev- "><tt><i>205</i>             <span class="n">ranking</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;player_name&quot;</span><span class="p">:</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;points&quot;</span><span class="p">:</span> <span class="n">score</span><span class="p">})</span></tt>
             </div>
             <div id="l206"
                class="code sev- "><tt><i>206</i> &nbsp;</tt>
@@ -821,7 +821,7 @@
                class="code sev- "><tt><i>244</i>         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">final_table</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span></tt>
             </div>
             <div id="l245"
-               class="code sev- "><tt><i>245</i>             <span class="n">winner</span> <span class="o">=</span> <span class="n">final_table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;player_id&quot;</span><span class="p">]</span></tt>
+               class="code sev- "><tt><i>245</i>             <span class="n">winner</span> <span class="o">=</span> <span class="n">final_table</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;player_name&quot;</span><span class="p">]</span></tt>
             </div>
             <div id="l246"
                class="code sev- "><tt><i>246</i> &nbsp;</tt>
@@ -902,7 +902,7 @@
                class="code sev- "><tt><i>268</i>             <span class="s2">&quot;completed&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_completed</span><span class="p">,</span></tt>
             </div>
             <div id="l269"
-               class="code sev- "><tt><i>269</i>             <span class="s2">&quot;players&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_ids</span><span class="p">[:],</span></tt>
+               class="code sev- "><tt><i>269</i>             <span class="s2">&quot;players&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_player_names</span><span class="p">[:],</span></tt>
             </div>
             <div id="l270"
                class="code sev- "><tt><i>270</i>             <span class="s2">&quot;rounds&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">rnd</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span> <span class="k">for</span> <span class="n">rnd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rounds</span><span class="p">],</span></tt>
@@ -968,7 +968,7 @@
                class="code sev- "><tt><i>290</i>             <span class="n">_current_round_index</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;current_round&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span></tt>
             </div>
             <div id="l291"
-               class="code sev- "><tt><i>291</i>             <span class="n">_player_ids</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;players&quot;</span><span class="p">,</span> <span class="p">[]),</span></tt>
+               class="code sev- "><tt><i>291</i>             <span class="n">_player_names</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;players&quot;</span><span class="p">,</span> <span class="p">[]),</span></tt>
             </div>
             <div id="l292"
                class="code sev- "><tt><i>292</i>             <span class="n">_completed</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;completed&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span></tt>

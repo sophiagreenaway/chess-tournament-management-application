@@ -30,3 +30,8 @@ class TournamentManager:
 
     def save_tournament(self, tournament):
         tournament.save()
+        for index, (filepath, _) in enumerate(self.tournaments):
+            if filepath == tournament.filepath:
+                self.tournaments[index] = (filepath, tournament)
+                return
+        self.tournaments.append((tournament.filepath, tournament))

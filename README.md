@@ -12,13 +12,14 @@ There are data files provided:
 ### Models
 
 This package contains the domain models used by the application:
-* `Player` is a class that represents a chess player
-* `Club` is a class that represents a chess club (including `Player`s)
-* `ClubManager` is a manager class that allows to manage all clubs (and create new ones)
-* `Match` is a class that represents a match between two players
-* `Round` is a class that represents one tournament round and its matches
-* `Tournament` is a class that handles tournament rounds, results, standings, and serialization
-* `TournamentManager` is a manager class that loads and saves tournament files
+* `player.py` is a class that represents a chess player
+* `club.py` is a class that represents a chess club
+* `club_manager.py` is a manager class that allows management all clubs (and create new ones)
+* `match.py` is a class that represents a match between two players
+* `round.py` is a class that represents one tournament round and its matches
+* `tournament.py` is a class that handles tournament rounds, results, standings, and serialization
+* `tournament_manager.py` is a manager class that loads and saves tournament files
+* `player_manager.py` is a manager class that allows the creation of players
 
 ### Screens
 
@@ -87,7 +88,7 @@ python manage_tournaments.py
 Run:
 
 ```bash
-flake8 . --exclude=.venv,__pycache__ --output-file=flake8_report.txt
+flake8 . --format=html --htmldir=flake8-report
 ```
 
 This updates `/Users/sophiagreenaway/repos/P3-Application-Developer-Skills-Bootcamp/flake8_report.txt` with a new report.
